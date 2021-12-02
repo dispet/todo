@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Todo, TodoStatus } from '../../types/Todo';
 import { TodosState } from '../../types/TodosState';
-import axios from 'axios';
 
 const url = `http:/localhost:5003/`;
 
@@ -9,10 +8,7 @@ const url = `http:/localhost:5003/`;
 // axios.get(`${url}deals`).then( response =>
 //     this.setState({TodosState : response})
 // );
-const initialState: TodosState =  {
-  todo: [],
-  editingTodo: null,
-};
+
 // const persistedTodos = () => {
 //   try {
 //     // const persistedState = localStorage.getItem('todos');
@@ -32,23 +28,20 @@ const  persistedTodos = async () => {
   if (!response.ok) {
     throw new Error(`Could not fetch ${url}deals received ${response.status}`);
   }
-
-  // const persistedState = await response.json();
-
   try {
-    const persistedState = await response.json();
-    if (persistedState) return persistedState as TodosState;
+    return await response.json()
   } catch (e) {
     console.log(e);
   }
 };
 
+let initialState: TodosState = {
+  todo: [],
+  editingTodo: null,
+};
 
+persistedTodos().then( res => (res) ? initialState = { todo: res.todo,editingTodo: null } : initialState)
 
-
-// persistedTodos().then(
-//     data => initialState = data;
-// );
 // Helper function to get respective todo list based on status
 const getTodoOriginByStatus = (status: TodoStatus, state: TodosState) => {
       return state.todo;

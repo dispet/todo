@@ -7,15 +7,15 @@ const store = configureStore({
   },
 });
 
-store.subscribe(() => {
-  const { todo } = store.getState().todos;
-  // localStorage.setItem(
-  //   'todos',
-  //   JSON.stringify({
-  //     todo
-  //   })
-  // );
-});
+// store.subscribe(() => {
+//   const { todo } = store.getState().todos;
+//   // localStorage.setItem(
+//   //   'todos',
+//   //   JSON.stringify({
+//   //     todo
+//   //   })
+//   // );
+// });
 
 export type RootStore = ReturnType<typeof store.getState>;
 
