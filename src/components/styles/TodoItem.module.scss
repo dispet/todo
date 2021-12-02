@@ -1,0 +1,127 @@
+$TodoBgColor: #eff4fb;
+$TodoBorderColor: #9ec1e4;
+
+$InProgressBgColor: #fbefef;
+$InProgressBorderColor: #e49e9e;
+
+$CompletedBgColor: #effbf4;
+$CompletedBorderColor: #9ee4a4;
+
+.todoItem {
+  display: flex;
+  border-radius: 4px;
+  color: #333;
+  font-size: 1rem;
+  font-weight: 400;
+  padding: 1rem;
+  border: 1px solid transparent;
+  border-left-width: 3px;
+  position: relative;
+  margin-bottom: 0.5rem;
+  transition: border-color 0.2s;
+
+  &:hover {
+    box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
+  }
+
+  &.todo {
+    background-color: $TodoBgColor;
+    border-left-color: $TodoBorderColor;
+    &:hover {
+      border-color: $TodoBorderColor;
+    }
+  }
+  &.inProgress {
+    background-color: $InProgressBgColor;
+    border-left-color: $InProgressBorderColor;
+    &:hover {
+      border-color: $InProgressBorderColor;
+    }
+  }
+  &.completed {
+    background-color: $CompletedBgColor;
+    border-left-color: $CompletedBorderColor;
+    &:hover {
+      border-color: $CompletedBorderColor;
+    }
+  }
+
+  .info {
+    flex: 1;
+
+    .title {
+      font-size: 1.125rem;
+      color: rgba(0, 0, 0, 0.7);
+      font-weight: 500;
+    }
+    .description {
+      margin-top: 0.5rem;
+      font-size: 0.875rem;
+      color: #333;
+    }
+  }
+}
+
+@keyframes anim {
+  from {
+    transform: scale(0.8);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.actions {
+  display: flex;
+  margin-right: -4px;
+}
+
+.menuButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 1.5rem;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  font-size: 1.5rem;
+  margin-right: -0.5rem;
+  position: relative;
+
+  svg {
+    fill: #3e3e3e;
+    transition: fill 0.2s;
+    width: 1em;
+  }
+
+  &:hover svg {
+    fill: #626262;
+  }
+}
+
+.actionButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.5rem;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  position: relative;
+  font-size: 0.8rem;
+  border-radius: 50%;
+  padding: 1rem 0.5rem;
+  color: #fff;
+  margin-right: -4px;
+
+  &:hover {
+    background-color: #00000013;
+  }
+
+  svg {
+    fill: #274062;
+    transition: fill 0.2s;
+    width: 1rem;
+  }
+}

@@ -1,0 +1,42 @@
+.column {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  width: 24rem;
+  box-shadow: 2px 3px 4px rgba(50, 68, 94, 0.06);
+  border-radius: 4px;
+  margin: 0 0.5rem;
+
+  @media (max-width: 1200px) {
+    width: 22rem;
+  }
+
+  @media (max-width: 1024px) {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #474f55;
+    padding: 0.8rem 2rem;
+    border-bottom: 3px solid #57a1ea;
+    border-radius: 4px 4px 0 0;
+
+    &.todo {
+      border-color: #57a1ea;
+    }
+    &.inProgress {
+      border-color: #f75e72;
+    }
+    &.completed {
+      border-color: #71d660;
+    }
+  }
+}
+
+.todoContainer {
+  margin: 1rem;
+  margin-bottom: 0.5rem;
+}
