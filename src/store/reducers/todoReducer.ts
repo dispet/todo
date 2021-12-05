@@ -1,59 +1,49 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Todo, TodoStatus } from '../../types/Todo';
-import { TodosState } from '../../types/TodosState';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {Todo, TodoStatus} from '../../types/Todo';
+import {TodosState} from '../../types/TodosState';
+import axios from 'axios';
 
-const url = `http:/localhost:5003/`;
+const url = `http://localhost:5003/`;
 
-
-// axios.get(`${url}deals`).then( response =>
-//     this.setState({TodosState : response})
-// );
-
-// const persistedTodos = () => {
-//   try {
-//     // const persistedState = localStorage.getItem('todos');
-//     axios.get(`${url}deals`).then( response =>
-//         this.initialState = response
-//     );
-//     if (persistedState) return persistedState as unknown as TodosState;
-//     // if (persistedState) return JSON.parse(persistedState) as TodosState;
-//   } catch (e) {
-//     console.log(e);
-//   }
-// };
-
-const  persistedTodos = async () => {
-  const response = await fetch(`${url}deals`);
-  // const persistedState = localStorage.getItem('todos');
-  if (!response.ok) {
-    throw new Error(`Could not fetch ${url}deals received ${response.status}`);
-  }
-  try {
-    return await response.json()
-  } catch (e) {
-    console.log(e);
-  }
+export const fetchUsers = () => async (dispatch: any) => {
+  dispatch(usersLoading());
+  const response = await axios.get(`${url}deals`);
+  dispatch(usersReceived(response.data));
 };
 
 let initialState: TodosState = {
+  loading: 'idle',
   todo: [],
   editingTodo: null,
 };
 
-persistedTodos().then( res => (res) ? initialState = { todo: res.todo,editingTodo: null } : initialState)
-
 // Helper function to get respective todo list based on status
 const getTodoOriginByStatus = (status: TodoStatus, state: TodosState) => {
-      return state.todo;
+  return state.todo;
 };
 
 const todoSlice = createSlice({
   name: 'todos',
   initialState,
   reducers: {
+    usersLoading(state) {
+      // Use a "state machine" approach for loading state instead of booleans
+      if (state.loading === 'idle') {
+        state.loading = 'pending';
+      }
+    },
+
+    usersReceived(state, action) {
+      if (state.loading === 'pending') {
+        state.loading = 'idle';
+        state.todo = action.payload;
+      }
+    },
+
     addTodo: (state: TodosState, action: PayloadAction<Todo>) => {
-      const { status } = action.payload;
+      const {status} = action.payload;
       const todo = action.payload;
+      axios.post(`${url}deals`, todo);
 
       switch (status) {
         case TodoStatus.Todo:
@@ -62,7 +52,12 @@ const todoSlice = createSlice({
       }
     },
 
-    updateTodo: (state: TodosState, { payload: { todo, prevStatus } }: PayloadAction<{ todo: Todo; prevStatus: TodoStatus }>) => {
+    updateTodo: (state: TodosState, {
+      payload: {
+        todo,
+        prevStatus
+      }
+    }: PayloadAction<{ todo: Todo; prevStatus: TodoStatus }>) => {
       const origin = getTodoOriginByStatus(prevStatus, state);
       const index = origin.findIndex((t) => t.id === todo.id);
 
@@ -76,16 +71,18 @@ const todoSlice = createSlice({
         } else {
           origin[index] = todo;
         }
+        axios.put(`${url}deal/${todo.id}`, todo);
       }
 
       state.editingTodo = null;
     },
 
-    removeTodo: (state: TodosState, { payload: { id, status } }: PayloadAction<Todo>) => {
+    removeTodo: (state: TodosState, {payload: {id, status}}: PayloadAction<Todo>) => {
       const origin = getTodoOriginByStatus(status, state);
       const todo = origin.find((todo) => todo.id === id);
 
       todo && origin.splice(state.todo.indexOf(todo), 1);
+      axios.delete(`${url}deal/${id}`);
     },
 
     setEditingTodo: (state: TodosState, action: PayloadAction<Todo>) => {
@@ -96,23 +93,38 @@ const todoSlice = createSlice({
       state.editingTodo = null;
     },
 
-    reorderTodos: (state: TodosState, { payload: { todos, type } }: PayloadAction<{ todos: Todo[]; type: TodoStatus }>) => {
+    reorderTodos: (state: TodosState, {payload: {todos, type}}: PayloadAction<{ todos: Todo[]; type: TodoStatus }>) => {
       if (type === TodoStatus.Todo) state.todo = todos;
+      axios.put(`${url}deals`, todos);
     },
 
     crossColumnReorder: (
       state: TodosState,
       {
-        payload: { source, sourceStatus, destination, destinationStatus },
+        payload: {source, sourceStatus, destination, destinationStatus},
       }: PayloadAction<{ source: Todo[]; sourceStatus: TodoStatus; destination: Todo[]; destinationStatus: TodoStatus }>
     ) => {
       if (sourceStatus === TodoStatus.Todo) state.todo = source;
 
       if (destinationStatus === TodoStatus.Todo) state.todo = destination;
+
     },
   },
 });
 
-export const { addTodo, updateTodo, setEditingTodo, dismissEditingTodo, removeTodo, reorderTodos, crossColumnReorder } = todoSlice.actions;
+
+export const {
+  usersLoading,
+  usersReceived,
+  addTodo,
+  updateTodo,
+  setEditingTodo,
+  dismissEditingTodo,
+  removeTodo,
+  reorderTodos,
+  crossColumnReorder
+} = todoSlice.actions;
 
 export default todoSlice.reducer;
+
+

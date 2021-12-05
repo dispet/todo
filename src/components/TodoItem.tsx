@@ -1,10 +1,10 @@
-import { CSSProperties, forwardRef } from 'react';
-import { DraggableProvidedDraggableProps, DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
-import { useDispatch } from 'react-redux';
-import { ReactComponent as EditIcon } from '../assets/edit.svg';
-import { ReactComponent as RemoveIcon } from '../assets/remove.svg';
-import { removeTodo, setEditingTodo } from '../store/reducers/todoReducer';
-import { Todo, TodoStatus } from '../types/Todo';
+import {CSSProperties, forwardRef} from 'react';
+import {DraggableProvidedDraggableProps, DraggableProvidedDragHandleProps} from 'react-beautiful-dnd';
+import {useDispatch} from 'react-redux';
+import {ReactComponent as EditIcon} from '../assets/edit.svg';
+import {ReactComponent as RemoveIcon} from '../assets/remove.svg';
+import {removeTodo, setEditingTodo} from '../store/reducers/todoReducer';
+import {Todo} from '../types/Todo';
 import styles from './styles/TodoItem.module.scss';
 
 interface ITodoItemProps {
@@ -31,8 +31,8 @@ const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>((props, ref) => {
       ref={ref}
     >
       <div className={styles.info}>
-        <p className={styles.title}>{props.todo.title}</p>
-        <p className={styles.description}>{props.todo.description}</p>
+        <p className={styles.title}>{props.todo.name}</p>
+        <p className={styles.description}>{props.todo.text}</p>
       </div>
       <div className={styles.actions}>
         <button
@@ -42,7 +42,7 @@ const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>((props, ref) => {
           }}
           aria-label="Edit"
         >
-          <EditIcon />
+          <EditIcon/>
         </button>
         <button
           className={[styles.actionButton, styles.remove].join(' ')}
@@ -51,7 +51,7 @@ const TodoItem = forwardRef<HTMLDivElement, ITodoItemProps>((props, ref) => {
           }}
           aria-label="Remove"
         >
-          <RemoveIcon />
+          <RemoveIcon/>
         </button>
       </div>
     </div>

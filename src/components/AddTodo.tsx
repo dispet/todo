@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { v4 as uuidv4 } from 'uuid';
-import { addTodo, dismissEditingTodo, updateTodo } from '../store/reducers/todoReducer';
-import { RootStore } from '../store/store';
-import { TodoStatus } from '../types/Todo';
+import React, {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {v4 as uuidv4} from 'uuid';
+import {addTodo, dismissEditingTodo, updateTodo} from '../store/reducers/todoReducer';
+import {RootStore} from '../store/store';
+import {TodoStatus} from '../types/Todo';
 import Modal from './shared/Modal';
 import styles from './styles/AddTodo.module.scss';
 
 const AddTodo: React.FC = () => {
   const dispatch = useDispatch();
-  const { todo, editingTodo } = useSelector((store: RootStore) => store.todos);
+  const {todo, editingTodo} = useSelector((store: RootStore) => store.todos);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [todoTitle, setTodoTitle] = useState('');
@@ -19,8 +19,8 @@ const AddTodo: React.FC = () => {
   useEffect(() => {
     if (editingTodo) {
       setIsModalOpen(true);
-      setTodoTitle(editingTodo.title);
-      setTodoDescription(editingTodo.description);
+      setTodoTitle(editingTodo.name);
+      setTodoDescription(editingTodo.text);
       setTodoStatus(editingTodo.status);
     }
   }, [editingTodo]);
@@ -30,11 +30,11 @@ const AddTodo: React.FC = () => {
 
     const todo = {
       id: editingTodo ? editingTodo.id : uuidv4(),
-      title: todoTitle,
-      description: todoDescription,
+      name: todoTitle,
+      text: todoDescription,
       status: todoStatus,
     };
-    dispatch(editingTodo ? updateTodo({ todo, prevStatus: editingTodo.status }) : addTodo(todo));
+    dispatch(editingTodo ? updateTodo({todo, prevStatus: editingTodo.status}) : addTodo(todo));
 
     setIsModalOpen(false);
     setTodoTitle('');
@@ -49,7 +49,7 @@ const AddTodo: React.FC = () => {
     setTimeout(() => dispatch(dismissEditingTodo()), 500);
   };
 
-  const totalTasks = todo.length ;
+  const totalTasks = todo.length;
 
   return (
     <>
@@ -75,7 +75,7 @@ const AddTodo: React.FC = () => {
             name="description"
             id="description"
             rows={3}
-          ></textarea>
+          />
 
           <div>
             <button className={[styles.button, styles.success].join(' ')} type="submit">
@@ -95,7 +95,8 @@ const AddTodo: React.FC = () => {
       </Modal>
 
       <div className={styles.addTodo}>
-        <button type="submit" onClick={() => setIsModalOpen(true)} className={[styles.button, styles.primary].join(' ')}>
+        <button type="submit" onClick={() => setIsModalOpen(true)}
+                className={[styles.button, styles.primary].join(' ')}>
           New Todo
         </button>
         <p className={styles.summary}>

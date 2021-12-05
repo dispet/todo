@@ -1,4 +1,4 @@
-import { ReactComponent as TodoIcon } from '../assets/tick_box.svg';
+import {ReactComponent as TodoIcon} from '../assets/tick_box.svg';
 import styles from './styles/Header.module.scss';
 
 const Header = () => {
@@ -6,8 +6,8 @@ const Header = () => {
     <div className={styles.container}>
       <header className={styles.header}>
         <h2 className={styles.appTitle}>
-          <TodoIcon />
-          <span>React Todo App</span>
+          <TodoIcon/>
+          <span>Todo App</span>
         </h2>
       </header>
     </div>

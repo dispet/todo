@@ -5,7 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import store from './store/store';
-
+import {fetchUsers} from "./store/reducers/todoReducer";
+store.dispatch(fetchUsers())
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>

@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
+import {configureStore} from '@reduxjs/toolkit';
 import todoReducer from './reducers/todoReducer';
 
 const store = configureStore({
@@ -6,16 +6,6 @@ const store = configureStore({
     todos: todoReducer,
   },
 });
-
-// store.subscribe(() => {
-//   const { todo } = store.getState().todos;
-//   // localStorage.setItem(
-//   //   'todos',
-//   //   JSON.stringify({
-//   //     todo
-//   //   })
-//   // );
-// });
 
 export type RootStore = ReturnType<typeof store.getState>;
 

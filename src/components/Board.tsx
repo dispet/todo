@@ -1,11 +1,14 @@
-import { DragDropContext, DropResult } from 'react-beautiful-dnd';
-import { useDispatch, useSelector } from 'react-redux';
-import { crossColumnReorder, reorderTodos } from '../store/reducers/todoReducer';
-import { RootStore } from '../store/store';
-import { Todo, TodoStatus } from '../types/Todo';
+import {DragDropContext, DropResult} from 'react-beautiful-dnd';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  crossColumnReorder,
+  reorderTodos
+} from '../store/reducers/todoReducer';
+import {RootStore} from '../store/store';
+import {Todo, TodoStatus} from '../types/Todo';
 import Column from './Column';
 import styles from './styles/Board.module.scss';
-import React from "react";
+import React from 'react';
 
 const reorder = (list: Todo[], startIndex: number, endIndex: number): Todo[] => {
   const result = Array.from(list);
@@ -29,23 +32,23 @@ interface IBoardProps {
 
 const Board: React.FC<IBoardProps> = (props) => {
   const dispatch = useDispatch();
-  const { todo } = useSelector((store: RootStore) => store.todos);
+  const {todo} = useSelector((store: RootStore) => store.todos);
 
   const getList = () => {
-      return { todos: todo, status: TodoStatus.Todo };
+    return {todos: todo, status: TodoStatus.Todo};
   };
 
   const onDragEnd = (result: DropResult) => {
-    const { source, destination } = result;
+    const {source, destination} = result;
 
     if (!destination) {
       return;
     }
 
     if (source.droppableId === destination.droppableId) {
-      const { todos, status } = getList();
+      const {todos, status} = getList();
       const items = reorder(todos, result.source.index, destination.index);
-      dispatch(reorderTodos({ todos: items, type: status }));
+      dispatch(reorderTodos({todos: items, type: status}));
     } else {
       const sourceList = getList();
       const destinationList = getList();
@@ -54,9 +57,9 @@ const Board: React.FC<IBoardProps> = (props) => {
 
       dispatch(
         crossColumnReorder({
-          source: updatedSource.map((t) => ({ ...t, status: sourceList.status })),
+          source: updatedSource.map((t) => ({...t, status: sourceList.status})),
           sourceStatus: sourceList.status,
-          destination: updatedDestination.map((t) => ({ ...t, status: destinationList.status })),
+          destination: updatedDestination.map((t) => ({...t, status: destinationList.status})),
           destinationStatus: destinationList.status,
         })
       );
